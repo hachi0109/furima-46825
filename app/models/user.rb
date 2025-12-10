@@ -4,25 +4,30 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  with_options presence: true, format: { with: /\A[ぁ-んァ-ヶ一-龥々ー]+\z/ } do
+  # --- バリデーション ---
+  validates :name, presence: true
+  validates :birthday, presence: true
+
+  # パスワードは半角英数字混合であること
+  PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]+\z/i.freeze
+  validates :password, format: { with: PASSWORD_REGEX }
+
+  # presence: true はまとめて記述
+  with_options presence: true do
+    validates :family_name
+    validates :first_name
+    validates :family_name_kana
+    validates :first_name_kana
+  end
+
+  # format は allow_blank: true をつけて、presence バリデーションと分ける
+  with_options format: { with: /\A[ぁ-んァ-ヶ一-龥々ー]+\z/ }, allow_blank: true do
     validates :family_name
     validates :first_name
   end
 
-  with_options presence: true, format: { with: /\A[ァ-ヶー]+\z/ } do
+  with_options format: { with: /\A[ァ-ヶー]+\z/ }, allow_blank: true do
     validates :family_name_kana
     validates :first_name_kana
   end
-  
-  PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]+\z/i.freeze
-  validates :password, format: { with: PASSWORD_REGEX }
-
-  validates :name, presence: true
-  validates :family_name, presence: true
-  validates :first_name, presence: true
-  validates :family_name_kana, presence: true
-  validates :first_name_kana, presence: true
-  validates :birthday, presence: true
-  
-  # has_many :items
 end
