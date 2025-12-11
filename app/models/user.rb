@@ -3,6 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+  has_many :items
 
   # --- バリデーション ---
   validates :name, presence: true
@@ -12,7 +13,6 @@ class User < ApplicationRecord
   PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]+\z/i.freeze
   validates :password, format: { with: PASSWORD_REGEX }
 
-  # presence: true はまとめて記述
   with_options presence: true do
     validates :family_name
     validates :first_name
@@ -20,7 +20,6 @@ class User < ApplicationRecord
     validates :first_name_kana
   end
 
-  # format は allow_blank: true をつけて、presence バリデーションと分ける
   with_options format: { with: /\A[ぁ-んァ-ヶ一-龥々ー]+\z/ }, allow_blank: true do
     validates :family_name
     validates :first_name
