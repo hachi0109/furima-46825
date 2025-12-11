@@ -9,19 +9,13 @@ class Item < ApplicationRecord
   belongs_to :prefecture
   belongs_to :shipping_date
 
-  validates :category_id, numericality: { other_than: 1 }
-  validates :status_id, numericality: { other_than: 1 } 
-  validates :shipping_cost_id, numericality: { other_than: 1 } 
-  validates :prefecture_id, numericality: { other_than: 1 } 
-  validates :shipping_date_id, numericality: { other_than: 1 }
+  # ジャンルの選択が「---」の時は保存できないようにする
+  validates :category_id, :status_id, :shipping_cost_id, :prefecture_id, :shipping_date_id,
+            numericality: { other_than: 1, message: "can't be blank" }
 
   validates :image, presence: true
   validates :name, presence: true
-  validates :price, presence: true
+  validates :price, presence: true,
+                    numericality: { only_integer: true, greater_than_or_equal_to: 300, less_than_or_equal_to: 9_999_999 }
   validates :explanation, presence: true
-  validates :category_id, presence: true
-  validates :status_id, presence: true
-  validates :shipping_cost_id, presence: true
-  validates :prefecture_id, presence: true
-  validates :shipping_date_id, presence: true
 end
