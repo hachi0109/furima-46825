@@ -1,14 +1,14 @@
 class Item < ApplicationRecord
   belongs_to :user
   has_one_attached :image
-  #has_one :order
+  has_one :order
   extend ActiveHash::Associations::ActiveRecordExtensions
   belongs_to :category
   belongs_to :status
   belongs_to :shipping_cost
   belongs_to :prefecture
   belongs_to :shipping_date
-
+  
   # ジャンルの選択が「---」の時は保存できないようにする
   validates :category_id, :status_id, :shipping_cost_id, :prefecture_id, :shipping_date_id,
             numericality: { other_than: 1, message: "can't be blank" }
