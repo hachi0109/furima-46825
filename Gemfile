@@ -92,4 +92,4 @@ group :production do
   gem 'unicorn', '6.1.0'
 end
 
-gem 'cgi'
+gem 'cgi', '>= 0.3.6'
