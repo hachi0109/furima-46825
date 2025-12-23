@@ -396,6 +396,7 @@ DEPENDENCIES
   aws-sdk-s3
   bootsnap
   capybara
+  cgi (>= 0.3.6)
   debug
   devise
   factory_bot_rails
